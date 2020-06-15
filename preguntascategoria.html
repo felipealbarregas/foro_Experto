@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
+    <title>Foro Expertos su lugar de busqueda</title>
+<link rel="stylesheet" type="text/css" href="../css/stylescabecera.css">
+<link rel="stylesheet" type="text/css" href="../css/stylefooter.css">
+<link rel="stylesheet" type="text/css" href="../css/styletabla.css">
+<script src="js/creartabla.js" type="text/javascript"></script>
+<script src="js/funciones.js" type="text/javascript"></script>
+<script src="js/jquery-3.5.1.js" type="text/javascript"></script>
+<link href="js/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet" type="text/css">
+<script src="js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+<script>
+window.onload = function() {
+var nickname=sessionStorage.getItem("usuario");
+  var parametros = {"nickname":nickname};
+  //obtenemos el nickname del usuario y lanzamos la consulta para obtener las preguntas de la categoria
+  //a la que pertenece el usuario
+$.ajax({
+   type: "GET",
+   url: '../php/obtenerpreguntascategoria.php',
+   dataType: "json",
+   data: parametros,
+
+   success: function(data){
+          $.each(data,function(i,item) {
+            $('#contenido').append('<div id="cabecera"><hr id="cabecera"><a href=mostrarmensaje.html?id='+item.id+'>Mensaje<a><hr id="cabecera"></div>');
+            $('#contenido').append('<tr class="tema"><td><strong>Tema:</strong>  ' + item.tema + '</td></tr><tr><td class="fecha"><strong>Fecha:  </strong>' + item.fecha + '</td></tr><tr><td class="mens"><strong>Mensaje:</strong> <br><br>' + item.mensaje + '</td></tr>');
+
+   });
+   },
+   error: function (request, status, error) {
+        alert(error);
+    }
+ });
+
+}
+
+
+</script>
+</head>
+<body>
+  <header id="main-header">
+    <img src="../imagenes/logo.png"></img>
+    <a class="boton_personalizado" href="registrar.html">Registrarse</a>
+        <a class="boton_personalizado1" href=loguearse.html>Iniciar Sesion</a>
+    <form id="buscar" action="" method="">
+      <input id="search" type="search" placeholder="Buscar...">
+        <button id="btnbuscar">Buscar</button>
+    </form>
+  </header>
+
+  <ul id="menubar">
+    <li><a href="inicioexpertos.html">Inicio</a></li>
+    <li><a href="preguntascategoria.html">Preguntas</a></li>
+    <li><a href="vermisvaloraciones.html">Mis Valoraciones</a></li>
+  <li><a href="php/enviarcorreo.php">Contacto</a></li>
+  <img  id="logo" src="imagenes/perfildeusuario.jpg"  onclick="desplegarmenu(2)"></li>
+<li id="nickname"><script>var nickname = sessionStorage.getItem("usuario"); document.getElementById("nickname").innerHTML= nickname;</script></li>
+  </ul>
+
+<br>
+<br>
+<br>
+  <h1>Mis preguntas</h1>
+<div id="contenedor">
+  <table  id="tablamensajes">
+ 		<thead>
+ 		  <tr>
+ 		     <th id="iniciar">Preguntas para tu categoria</th>
+ 		  </tr>
+ 		</thead>
+ 			<tbody id="contenido">
+
+ 			</tbody>
+ 		</table>
+</div>
+</body>
+  <footer>
+  <div id="footer">
+
+          <p>&#169; 2020 All Rights Reserverd</p>
+          <p> Diseñado por Felipe Cendrero Diaz</p>
+            <img id="footerimg" src="/imagenes/logocentro.jpg"/>
+   </div>
+  </footer>
+  </html>

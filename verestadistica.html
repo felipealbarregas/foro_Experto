@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
+    <title>Foro Expertos su lugar de busqueda</title>
+<link rel="stylesheet" type="text/css" href="../css/stylescabecera.css">
+<link rel="stylesheet" type="text/css" href="../css/styleexpertos.css">
+<link rel="stylesheet" type="text/css" href="../css/stylefooter.css">
+<script src="js/funciones.js" type="text/javascript"></script>
+<script src="js/jquery-3.5.1.js" type="text/javascript"></script>
+<script src="js/chart.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/creartabla.js"></script>
+<link href="js/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet" type="text/css">
+<script src="js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
+
+<script type="text/javascript">
+function obtenergraficas(){
+
+
+    var dias=new Array();
+  var tabla1=document.getElementById("datos").value;
+  var tiempo1=document.getElementById("tiempo").value;
+    var parametros = {"tablas":tabla1 , "tiempo":tiempo1};
+  $.ajax({
+     type: "GET",
+     url: '../php/obtenerestadistica.php',
+      data: parametros,
+     dataType: "json",
+     success: function(data){
+            $.each(data,function(i,item) {
+                dias[item.fecha-1]=(item.cantidad);
+     });
+
+
+
+     },
+
+     error: function(data) {
+       alert('No existen datos para esas fechas');
+          location.reload();
+     }
+   });
+
+   event.preventDefault();
+   $( document ).ajaxComplete(function() {
+   pintagrafica(dias);
+});
+
+
+}
+
+
+function pintagrafica(dias) {
+var cantidad=new Array();
+var f = new Date();
+  for( contador=1; contador <= 31; contador++ ) {
+    if( dias[contador]==undefined){
+      dias[contador]=0;
+    }
+  }
+  var mychart = document.getElementById("container").getContext("2d");
+  var tiempo1=document.getElementById("tiempo").value;
+  if(tiempo1=="day"){
+    cantidad.push(f.getDate()-1);
+  }else if(tiempo1=="week"){
+      cantidad.push["1","2","3","4","5","6","7"];
+  }else if(tiempo1=="month"){
+    cantidad.push("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31");
+  }
+
+var chart =new Chart( mychart,{
+  type:"bar",
+  data:{
+    labels: cantidad,
+    datasets:[
+      {
+        label:"Estadisticas",
+        backgroundColor: "#2175bc",
+        data:dias
+      }
+    ]
+
+  },
+options: {
+responsive: false
+}
+}
+
+)
+
+
+}
+
+</script>
+
+
+</head>
+<body>
+  <header id="main-header">
+    <img src="../imagenes/logo.png"></img>
+    <a class="boton_personalizado" href="registrar.html">Registrarse</a>
+        <a class="boton_personalizado1" href=loguearse.html>Iniciar Sesion</a>
+    <form id="buscar" action="" method="">
+      <input id="search" type="search" placeholder="Buscar...">
+      <button id="btnbuscar">Buscar</button>
+    </form>
+  </header>
+
+  <ul id="menubar">
+  <li><a href="inicioadmin.html">Inicio</a></li>
+  <li><a href="autorizarexpertos.html">Autorizar expertos</a></li>
+  <li><a href="verestadistica.html">Ver Estadisticas</a></li>
+  <li>
+    <img  id="logo" src="imagenes/perfildeusuario.jpg"  onclick="desplegarmenu()"></li>
+  </ul>
+<form name="fomul">
+  <select id="datos" >
+    <option value="personas">Usuarios registrados</option>
+    <option value="preguntas">Preguntas registradas</option>
+    <option value="respuestas">Respuestas</option>
+  </select>
+
+  <select id="tiempo" >
+    <option value="day">24 horas</option>
+    <option value="week">Ultima Semana</option>
+    <option value="month">ultimo Mes</option>
+  </select>
+  <button id="enviar" onclick="obtenergraficas()" >Enviar</button>
+</form>
+
+
+  <div><canvas id="container" ></canvas></div>
+
+
+
+
+
+
+
+</body>
+  <footer>
+  <div id="footer">
+
+          <p>&#169; 2020 All Rights Reserverd</p>
+          <p> Diseñado por Felipe Cendrero Diaz</p>
+            <img id="footerimg" src="/imagenes/logocentro.jpg"/>
+   </div>
+  </footer>
+  </html>

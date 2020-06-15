@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
+    <title>Foro Expertos su lugar de busqueda</title>
+<link rel="stylesheet" type="text/css" href="../css/stylescabecera.css">
+<link rel="stylesheet" type="text/css" href="../css/stylefooter.css">
+<link rel="stylesheet" type="text/css" href="../css/stylebody.css">
+<script src="js/obtenerinfousu.js" type="text/javascript"></script>
+<script src="js/jquery-3.5.1.js" type="text/javascript"></script>
+<script src="js/funciones.js" type="text/javascript"></script>
+<link href="js/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet" type="text/css">
+<script src="js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript">
+var nickname = sessionStorage.getItem("usuario");
+window.onload=function(){
+
+  obtenerinfousu(nickname);//llamamos al metodo para obtener la informacion del experto y agregarla al formulario
+  comprobarusuario(2);//comprobamos si el usuario esta activo o no
+}
+</script>
+
+</head>
+<body>
+  <header id="main-header">
+    <img src="../imagenes/logo.png"></img>
+    <a class="boton_personalizado" href="registrar.html">Registrarse</a>
+        <a class="boton_personalizado1" href=loguearse.html>Iniciar Sesion</a>
+    <form id="buscar" action="" method="">
+      <input id="search" type="search" placeholder="Buscar...">
+      <button id="btnbuscar">Buscar</button>
+    </form>
+  </header>
+
+  <ul id="menubar">
+    <li><a href="../inicioexpertos.html">Inicio</a></li>
+    <li><a href="php/enviarcorreo.php">Contacto</a></li>
+  </ul>
+
+
+
+<main id="cuerpo">
+
+    <h1 id=titulo> Modificacion de Usuarios</h1>
+
+    <form id="formulario" action="php/actualizarusu.php" method="POST">
+
+
+
+            <label for="nombre">Nombre * </label>
+            <input id="nombre" type="text" name="nombre" class="form-input" required/>
+
+            <label for="apellido">Apellido * </label>
+            <input id="apellido" type="text" name="apellido" class="form-input" required/>
+
+            <label for="Provincia">Provincia * </label>
+            <input id="provincia" type="text" name="provincia" class="form-input" required/>
+
+            <label for="ciudad">Ciudad * </label>
+            <input  id="ciudad" type="text" name="ciudad" class="form-input" required/>
+
+            <label for="nickname">nickname * </label>
+            <input  id="usuario" type="text" name="usuario" class="form-input" disabled="true" required/>
+            <input type="hidden" id="usu" name="usu"/>
+            <label for="Password">Contraseña * </label>
+            <input  id="password" type="password" name="password" class="form-input" required/>
+
+            <label for="email">Email *</label>
+            <input  id="email" type="email" name="email" class="form-input" />
+
+     <input  name="submit" type="submit" value="Modificar" />
+
+  </form>
+
+
+</main>
+</body>
+  <footer>
+  <div id="footer">
+
+          <p>&#169; 2020 All Rights Reserverd</p>
+          <p> Diseñado por Felipe Cendrero Diaz</p>
+            <img id="footerimg" src="/imagenes/logocentro.jpg"/>
+   </div>
+  </footer>
+  </html>

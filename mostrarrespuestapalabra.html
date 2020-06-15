@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;>
+    <title>Foro Expertos su lugar de busqueda</title>
+<link rel="stylesheet" type="text/css" href="../css/stylescabecera.css">
+<link rel="stylesheet" type="text/css" href="../css/stylefooter.css">
+<link rel="stylesheet" type="text/css" href="../css/styletabla1.css">
+<script src="js/jquery-3.5.1.js" type="text/javascript"></script>
+<script src="js/creartabla.js" type="text/javascript"></script>
+<script src="js/funciones.js" type="text/javascript"></script>
+<script src ="js/obtenersubcategoriausuario.js" type="text/javascript"></script>
+<link href="js/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet" type="text/css">
+<script src="js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+<script>
+window.onload = function() {
+//obtenemos la informacion de la sesion
+$("#fecha").val(sessionStorage.getItem("fecha"));
+$("#mensaje").val(sessionStorage.getItem("mensaje"));
+$("#usu").val(sessionStorage.getItem("usuario"));
+$("#temapre").val(sessionStorage.getItem("tema"));
+$("#idpregunta").val(sessionStorage.getItem("id"));
+$("#idsubcategoria").val(sessionStorage.getItem("idsubcategoria"));
+
+mostrarsubcategoria();//llamamos al metodo mostrar subcategoria
+mostrarusuario();//llamamos al metodo mostrar usuario
+mostrarrespuesta();//llamamos al metodo mostrar respuesta
+comprobarusuario(3);//llamamos al metodo comprobarusuario con el parametro 3
+}
+function mostrarsubcategoria(){
+  var parametros = {"id":sessionStorage.getItem("idsubcategoria")};
+
+
+$.ajax({
+   type: "GET",
+   url: '../php/obtenernombresubcategoria.php',
+   dataType: "json",
+   data: parametros,
+
+   success: function(data){
+          $.each(data,function(i,item) {
+          $("#subcategoria").append(item.subcategoria_nombre);
+          $("#subcate").val(item.subcategoria_nombre);
+   });
+   },
+   error: function(data) {
+     alert('error');
+   }
+ });
+}
+
+function mostrarusuario(){
+   var parametros1 = {"id":sessionStorage.getItem("idusuario")};
+ $.ajax({
+    type: "GET",
+    url: '../php/obtenerusuario.php',
+    dataType: "json",
+    data: parametros1,
+
+    success: function(data){
+           $.each(data,function(i,item) {
+          $("#usuario").append(item);
+
+    });
+    },
+    error: function(data) {
+      alert('error');
+    }
+  });
+}
+
+function mostrarrespuesta(){
+  var parametros2 = {"id":sessionStorage.getItem("id")};
+$.ajax({
+ type: "GET",
+ url: '../php/obtenerrespuesta.php',
+ dataType: "json",
+ data: parametros2,
+
+ success: function(data){
+        $.each(data,function(i,item) {
+          $('#contenidoresp').append('<div id="iniciarresp"><hr id="rayascolor">Respuestas<hr id="rayascolor"></div>');
+          $('#contenidoresp').append('<tr><td rowspan="2" id="usuarioresp">'+item.nickname+'</td><td><strong>Fecha:</strong></td><td id="fecharesp">'+item.fecha+'</td></tr>  <tr><td><strong>Mensaje:</strong></td><td id="mensajeresp">'+item.mensaje+'</td></tr></br>');
+
+ });
+ },
+ error: function(data) {
+   alert('error');
+ }
+});
+}
+
+
+</script>
+</head>
+<body>
+  <header id="main-header">
+    <img src="../imagenes/logo.png"></img>
+    <a class="boton_personalizado" href="registrar.html">Registrarse</a>
+        <a class="boton_personalizado1" href=loguearse.html>Iniciar Sesion</a>
+    <form id="buscar" action="" method="">
+      <input id="search" type="search" placeholder="Buscar...">
+      <button id="btnbuscar">Buscar</button>
+    </form>
+  </header>
+
+  <ul id="menubar">
+    <li><a href="inicioexpertos.html">Inicio</a></li>
+    <li><a href="preguntascategoria.html">Preguntas</a></li>
+    <li><a href="vermisvaloraciones.html">Mis Valoraciones</a></li>
+  <li><a href="php/enviarcorreo.php">Contacto</a></li>
+  <img  id="logo" src="imagenes/perfildeusuario.jpg"  onclick="comprobarusuario(3)"></li>
+  <li id="nickname"><script>var nickname = sessionStorage.getItem("usuario"); document.getElementById("nickname").innerHTML= nickname;</script></li>
+  </ul>
+
+
+
+
+  <h1>Respuestas al Mensaje</h1>
+<div id="contenedor">
+  <table  id="tablamensajes">
+    <thead>
+      <tr>
+         <th id="iniciar" colspan="3" ><hr id="rayascolor">Mensaje<hr id="rayascolor"></th>
+      </tr>
+    </thead>
+      <tbody id="contenido">
+          <tr><td rowspan="4" id="usuario"></td><td><strong>Subcategoria:</strong></td><td id="subcategoria"></td></tr>
+        <tr><td><strong>Tema:</strong></td><td id="tema"><script>document.write(sessionStorage.getItem("tema"));</script></td></tr>
+        <tr><td><strong>Fecha:</strong></td><td id="tema"><script>document.write(sessionStorage.getItem("fecha"));</script></td></tr>
+        <tr><td><strong>Mensaje:</strong></td><td id="tema"><script>document.write(sessionStorage.getItem("mensaje"));</script></td></tr>
+
+      </tbody>
+    </table>
+    <table  id="tablarespuesta">
+   		<thead>
+   		</thead>
+   			<tbody id="contenidoresp">
+
+   			</tbody>
+   		</table>
+</div>
+
+
+
+
+</body>
+  <footer>
+  <div id="footer">
+
+          <p>&#169; 2020 All Rights Reserverd</p>
+          <p> Diseñado por Felipe Cendrero Diaz</p>
+            <img id="footerimg" src="/imagenes/logocentro.jpg"/>
+   </div>
+  </footer>
+  </html>
